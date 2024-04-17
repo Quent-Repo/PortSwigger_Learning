@@ -1,0 +1,683 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Lab: Username enumeration via different responses</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="9c932a18-ef8a-46a4-930d-0c54ee25c62a" class="page sans"><header><h1 class="page-title"><strong><strong>Lab: Username enumeration via different responses</strong></strong></h1><p class="page-description"></p></header><div class="page-body"><p id="d79e4b44-afa7-40e7-a6d1-6d3695672de7" class="">
+</p><p id="a6be19a2-0567-4d78-a685-59e0ea170cb4" class="">This lab is vulnerable to username enumeration and password brute-force attacks. It has an account with a predictable username and password, which can be found in the following wordlists:</p><p id="9b7a0c4f-a0e9-428d-8aa0-edc12e640d09" class=""><a href="https://portswigger.net/web-security/authentication/auth-lab-usernames">usernames</a> : </p><figure id="5700152e-d914-46c0-9661-069b53724c53"><a href="https://portswigger.net/web-security/authentication/auth-lab-usernames" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Authentication lab usernames | Web Security Academy</div><div class="bookmark-description">You can copy and paste the following list to Burp Intruder to help you solve the Authentication labs. carlos root admin test guest info adm mysql user ...</div></div><div class="bookmark-href"><img src="https://portswigger.net/content/images/logos/favicon.ico" class="icon bookmark-icon"/>https://portswigger.net/web-security/authentication/auth-lab-usernames</div></div><img src="https://portswigger.net/content/images/logos/academy-twittercard.png" class="bookmark-image"/></a></figure><p id="c667b425-636b-4874-8ac2-609e6db8fda2" class=""><a href="https://portswigger.net/web-security/authentication/auth-lab-passwords">passwords</a>: </p><figure id="efe93dd5-4c48-4b23-8b6d-0a3c7e8d32e3"><a href="https://portswigger.net/web-security/authentication/auth-lab-passwords" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Authentication lab passwords | Web Security Academy</div><div class="bookmark-description">You can copy and paste the following list to Burp Intruder to help you solve the Authentication labs. 123456 password 12345678 qwerty 123456789 12345 1234 ...</div></div><div class="bookmark-href"><img src="https://portswigger.net/content/images/logos/favicon.ico" class="icon bookmark-icon"/>https://portswigger.net/web-security/authentication/auth-lab-passwords</div></div><img src="https://portswigger.net/content/images/logos/academy-twittercard.png" class="bookmark-image"/></a></figure><p id="3c5aff52-f57c-46e8-a697-1c6421d03d71" class="">
+</p><p id="0205cbf2-0113-4d5d-a337-9b69076b99af" class="">
+</p><p id="b185c92e-b11d-432d-aa3c-d6ea62cdd5bd" class=""><strong>Solution:</strong></p><p id="dc3459e4-9d8b-4564-be93-be1d17fc80d1" class="">Using <em>hyrda </em>we will be finding the username and password</p><p id="c453875e-ee79-441d-8f1e-69e83c9e7345" class="">
+</p><ol type="1" id="9b3147b5-23c5-4ac4-9cc3-a0df28dd1506" class="numbered-list" start="1"><li>Create a text file and copy and paste the usernames list that has been give. Save the usernames to a .txt file named <em>users.txt</em></li></ol><ol type="1" id="b6d461a2-98a4-4c08-80bb-d39a673380b3" class="numbered-list" start="2"><li>Create another text file and copy and paste the passwords list that has been give. Save the passwords to a .txt file names <em>passwords.txt</em></li></ol><ol type="1" id="472f6221-c8c1-47cf-b09a-cbd968fd5b21" class="numbered-list" start="3"><li>Click the My account link in the top right<figure id="18f4234d-68c3-4975-b88a-f4121c2b0e36" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled.png"><img style="width:384px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled.png"/></a></figure></li></ol><ol type="1" id="f7ec9032-8b4a-45da-84bb-464900dc5c78" class="numbered-list" start="4"><li>Enter a random username and password to see what the error message is (We will need it for later).<figure id="4c3b0d14-8091-45fa-94a9-cc180422dd3c" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%201.png"><img style="width:931px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%201.png"/></a></figure></li></ol><ol type="1" id="81c84b2f-7277-4d10-b133-ff262f07fdba" class="numbered-list" start="5"><li>We then do this again but first  right click the page and click Inspect to open developer tools.<figure id="266453b0-1d0f-4b46-b342-cc41b1be837b" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/79b5d102-0f00-47f2-b627-baec17b91b50.png"><img style="width:518px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/79b5d102-0f00-47f2-b627-baec17b91b50.png"/></a></figure></li></ol><ol type="1" id="60c77261-4923-41b4-aa6c-25f2546fb990" class="numbered-list" start="6"><li>Your screen will look something like this.<figure id="f8547c59-6fbd-45fd-8663-3bb118dc5452" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/0bc599fa-7011-4431-aeae-83decf56ae48.png"><img style="width:708px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/0bc599fa-7011-4431-aeae-83decf56ae48.png"/></a></figure></li></ol><ol type="1" id="768c68fa-4ec3-43e0-a659-2e8706715189" class="numbered-list" start="7"><li>click on the Network tab<figure id="f963a5d9-aef6-4c30-b90c-323c5cf4f8d0" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%202.png"><img style="width:1917px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%202.png"/></a></figure></li></ol><ol type="1" id="b2bc19c7-bfc7-4071-af0f-89111b54beb5" class="numbered-list" start="8"><li>Next click the <strong><em>Log in</em></strong> button. The Network tab will look like this after.<figure id="c12a70cd-6f0a-4335-bced-2fb771220355" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%203.png"><img style="width:1914px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%203.png"/></a></figure></li></ol><ol type="1" id="fac63019-3afe-48eb-aec2-9a7928028b59" class="numbered-list" start="9"><li>In the Network tab click the item that called <em>login.</em><figure id="42470e13-bbc5-4de4-afff-573b03fb406a" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%204.png"><img style="width:708px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%204.png"/></a></figure></li></ol><ol type="1" id="3219e403-819e-46ac-b926-8b696808b784" class="numbered-list" start="10"><li>Click the <em>Payload</em> tab.<figure id="f380dd34-532d-4920-b8e1-bcd9cbd41cd7" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%205.png"><img style="width:1031px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%205.png"/></a></figure></li></ol><ol type="1" id="fc01297e-456b-4c2f-afe9-869938413d77" class="numbered-list" start="11"><li>Then click <em>view source.</em><figure id="18f2a171-fc12-4504-b11e-108ff089caf3" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%206.png"><img style="width:1031px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%206.png"/></a></figure></li></ol><ol type="1" id="20b29f7b-88e5-405a-9506-72593a5abf2f" class="numbered-list" start="12"><li>We will then get back something that looks like this.<figure id="2b3e22b1-db08-45ef-aae4-4cc4297ea25c" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%207.png"><img style="width:680px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%207.png"/></a></figure></li></ol><ol type="1" id="dfde0d05-e9e2-42cd-ba5b-e60571faa848" class="numbered-list" start="13"><li>Save this it will be useful for hyrda later. i.e <code>username=Random+user+name&amp;password=run</code></li></ol><ol type="1" id="6b6c062d-5d19-4141-8570-ddab1fed30fc" class="numbered-list" start="14"><li>Take the url  for the page and save it. i.e <a href="http://0a4e006e036495a58663d50400d90023.web-security-academy.net/login">0a4e006e036495a58663d50400d90023.web-security-academy.net/login</a></li></ol><ol type="1" id="23607b1a-6e0b-4fa2-9a02-e4bc730d8205" class="numbered-list" start="15"><li>Open ternimal and go to where you have saved uses.txt and password.txt<figure id="746f3bb8-9994-4950-8dda-becd4d28be0d" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%208.png"><img style="width:518px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%208.png"/></a></figure></li></ol><ol type="1" id="6ee22473-463b-4552-a897-434214eaa39d" class="numbered-list" start="16"><li>We are then going to run <code>hydra -L users.txt -p &lt;random letter or number&gt; &lt;URL&gt; https-post-form &quot;/login:username=^USER^&amp;password=^PASS^:Invalid username&quot;</code>i.e <code>hydra -L users.txt -p p </code><code><a href="http://0a4e006e036495a58663d50400d90023.web-security-academy.net/">0a4e006e036495a58663d50400d90023.web-security-academy.net</a></code><code> https-post-form &quot;/login:username=^USER^&amp;password=^PASS^:Invalid username&quot;</code> </li></ol><ol type="1" id="e115cf64-1e2c-4fff-9c20-b0e5165a7b6c" class="numbered-list" start="17"><li>We will end up with getting back some information that will be the username.<figure id="829e8dd6-8454-48e0-8071-a8e00044b17f" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%209.png"><img style="width:680px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%209.png"/></a></figure></li></ol><ol type="1" id="eef5f126-3cc7-40ef-86a0-1b80d0c44ee2" class="numbered-list" start="18"><li>Once we have the username we now need to go back the site and see what the error is for an invade password.<figure id="33edb219-066c-4f68-91bc-207f955e4fda" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2010.png"><img style="width:1188px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2010.png"/></a></figure></li></ol><ol type="1" id="259182de-7268-4bc5-aa24-c5c4a11b283d" class="numbered-list" start="19"><li>We use hydra again but change the two things. First the <code>hydra -L users.txt</code>  will now be <code>hydra -l &lt;usersname&gt;</code> . Second change <code>Invalid username</code> to  <code>Incorrect password </code>at the end of the hydra command . i.e <code>&quot;/login:username=^USER^&amp;password=^PASS^:</code><strong><code>Invalid username</code></strong><code>&quot;</code> will now be <code>&quot;/login:username=^USER^&amp;password=^PASS^:</code><strong><code>Incorrect password</code></strong><code>&quot;</code></li></ol><ol type="1" id="411e3f8e-fde3-4837-9986-522b3e606c3f" class="numbered-list" start="20"><li>The code for the terminal should be <code>hydra -l &lt;USERNAME&gt; -P passwords.txt &lt;URL&gt; https-post-form &quot;/login:username=^USER^&amp;password=^PASS^:Incorrect password&quot;</code> i.e <code>hydra -l user -P passwords.txt </code><code><a href="http://0a4e006e036495a58663d50400d90023.web-security-academy.net/">0a4e006e036495a58663d50400d90023.web-security-academy.net</a></code><code> https-post-form &quot;/login:username=^USER^&amp;password=^PASS^:Incorrect password&quot;</code></li></ol><ol type="1" id="f60ca54e-513b-418e-9c91-3eeccae05f51" class="numbered-list" start="21"><li>There should now be only one username and password<figure id="565e4f62-3b1b-4709-85b3-f0dd9b0c174e" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2011.png"><img style="width:1111px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2011.png"/></a></figure></li></ol><ol type="1" id="d00d29b1-27ba-4a89-b799-8b46ef84a89a" class="numbered-list" start="22"><li>Put in the username and password and it should be done.<figure id="6c9b4f12-acd3-40c8-accc-e0102c73ce14" class="image"><a href="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2012.png"><img style="width:1216px" src="Lab%20Username%20enumeration%20via%20different%20responses%209c932a18ef8a46a4930d0c54ee25c62a/Untitled%2012.png"/></a></figure></li></ol><p id="30c46ac5-474b-4b65-bf40-5df85d60c259" class="">
+</p><p id="82e80bbb-1fa8-4e8a-9819-0be2eda2f80c" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
